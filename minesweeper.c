@@ -120,8 +120,6 @@ void print_talbe_array() {
     } else if(game_mode == 2) {
         printf("Enter (select to check cell), q (Exit selection): ");
     }
-
-
 }
 
 int main(int argc, char *argv[]) {
@@ -199,9 +197,6 @@ new_game:
         // flag
         case 'f':
         case 'F':
-
-
-flag_mode:
             game_mode = 1;
             do {
                 print_talbe_array();
@@ -218,7 +213,7 @@ flag_mode:
                 } else if(CursorDirection == '6') {
                     x = ++x % MAX;
                 } else if(CursorDirection == 'c' || CursorDirection == 'C') {
-                    goto check_mode;
+                    continue;
                 } else if(CursorDirection == '\n') {
                     value = table_array[y][x];
 
@@ -242,8 +237,6 @@ flag_mode:
         // check cell
         case 'c':
         case 'C':
-
-check_mode:
             game_mode = 2;
             do {
                 print_talbe_array();
@@ -261,7 +254,7 @@ check_mode:
                 } else if(CursorDirection == '6') {
                     x = ++x % MAX;
                 } else if(CursorDirection == 'f' || CursorDirection == 'F') {
-                    goto flag_mode;
+                    continue;
                 }
 
                 else if(CursorDirection == '\n') {
@@ -269,7 +262,7 @@ check_mode:
                     if(value == 0)						// blank case
                         uncover_blank_cell(y, x);
                     else if(value == 99)				// mine case
-                        goto end_of_game;
+                        continue;
                     else if(value > 0 && value <= 8)	// number case (the next cell is a mine)
                         table_array[y][x] += 10;
 
@@ -291,13 +284,13 @@ check_mode:
         // exit
         case 'q':
         case 'Q':
-            goto end_of_game;
-
-        default:
+	    goto end_of_game;
+ 
+	default:
             break;
         }
+	
     }
-
 end_of_game:
     game_mode = 0;
     print_talbe_array();
@@ -313,16 +306,20 @@ end_of_game:
         printf("Are you sure to exit? (y or n)? ");
         ch = getch();
         putchar('\n');
-        if(ch == 'y' || ch == 'Y') {
-            break;
-        } else if(ch == 'n' || ch == 'N') {
-            goto new_game;
+        if(ch == 'y' || ch == 'Y')
+        {
+              break;
+        }
+        else if(ch == 'n' || ch == 'N')
+        {
+              goto new_game;
+              break;
         }
         printf("Please answer y or n\n");
-    } while(1);
-    printf("See you next time!\n");
+       }while(1);
 
-    fflush(stdin);
+       printf("See you next time!\n");
+       fflush(stdin);
 
     return 0;
 }
