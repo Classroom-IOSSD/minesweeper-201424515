@@ -73,42 +73,45 @@ int uncover_blank_cell(int row, int col) {
     return 1; // success!
 }
 
+void ClearScreen()
+{
+     int i, j, value;
+     for(i = 0; i < MAX; i++) {
+         for(j = 0; j < MAX; j++) {
+             if(x == j && y == i) { 
+                 if(game_mode == 1) {
+                     printf("|%sF%s",BGMAG,BGNRM);
+                     continue;
+                 } else if(game_mode == 2) {
+                     printf("|%sC%s",BGMAG,BGNRM);
+                     continue;
+                 }
+
+             }
+             value = table_array[i][j];
+
+             if((value >= 0 && value <= 8) || value == 0 || value == 99)
+                 printf("|X");
+             else if(value == 10) // clean area
+                 printf("|%s%d%s",TEXTCYN, value - 10,BGNRM);
+             else if(value == 11) // the number of near mine is 1
+                 printf("|%s%d%s",TEXTYEL, value - 10,BGNRM);
+             else if(value > 11 && value <= 18) // the number of near mine is     greater than 1
+                 printf("|%s%d%s",TEXTRED, value - 10,BGNRM);
+             else if((value >= 20 && value <= 28) || value == 100)
+                 printf("|%sF%s",TEXTGRN,BGNRM);
+             else
+                 printf("ERROR"); // test purposes
+
+         }
+         printf("|\n");
+     }
+}
+
 void print_talbe_array() {
     // clear screen
     system("clear");
-
-    int i, j, value;
-    for(i = 0; i < MAX; i++) {
-        for(j = 0; j < MAX; j++) {
-            if(x == j && y == i) {
-                if(game_mode == 1) {
-                    printf("|%sF%s",BGMAG,BGNRM);
-                    continue;
-                } else if(game_mode == 2) {
-                    printf("|%sC%s",BGMAG,BGNRM);
-                    continue;
-                }
-
-            }
-            value = table_array[i][j];
-
-            if((value >= 0 && value <= 8) || value == 0 || value == 99)
-                printf("|X");
-            else if(value == 10) // clean area
-                printf("|%s%d%s",TEXTCYN, value - 10,BGNRM);
-            else if(value == 11) // the number of near mine is 1
-                printf("|%s%d%s",TEXTYEL, value - 10,BGNRM);
-            else if(value > 11 && value <= 18) // the number of near mine is greater than 1
-                printf("|%s%d%s",TEXTRED, value - 10,BGNRM);
-            else if((value >= 20 && value <= 28) || value == 100)
-                printf("|%sF%s",TEXTGRN,BGNRM);
-            else
-                printf("ERROR"); // test purposes
-
-        }
-        printf("|\n");
-    }
-
+    ClearScreen();
     printf("cell values: 'X' unknown, '%s0%s' no mines close, '1-8' number of near mines, '%sF%s' flag in cell\n",TEXTCYN,BGNRM,TEXTGRN,BGNRM);
     if(game_mode == 0) {
         printf("f (put/remove Flag in cell), c (Check cell), n (New game), q (Exit game): ");
@@ -120,7 +123,6 @@ void print_talbe_array() {
 
 
 }
-
 
 int main(int argc, char *argv[]) {
 
